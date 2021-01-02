@@ -80,13 +80,14 @@ namespace GetFiles.Controllers
                     await body.CopyToAsync(stream);
                 }
 
-                return Content("Files");
+                return Ok("Successfly");
             }
             catch (Exception ex)
             {
                 return StatusCode(500, "Internal server error");
             }
         }
+        
         [Route("Image")]
         [HttpGet]
         public async Task<IActionResult> Download(string filename)

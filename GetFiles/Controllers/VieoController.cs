@@ -40,7 +40,7 @@ namespace GetFiles.Controllers
         public async Task<IActionResult> GetVideos(string name)
         {
             if (name == null)
-                return Content("name is empty");
+                return NotFound("name is empty");
             var pathFile = Path.Combine(Directory.GetCurrentDirectory(), "Content", name).ToString();
 
             var memory = new MemoryStream();
@@ -59,12 +59,12 @@ namespace GetFiles.Controllers
                 return Content("Exeption message is {0}", ex.Message);
             }
         }
-        [Route("Image")]
+        [Route("addvideo")]
        
         [HttpPost]
         [RequestFormLimits(MultipartBodyLengthLimit = 1073741824)]
         [RequestSizeLimit(1073741824)]
-        public async Task<IActionResult> UploadFile([FromForm] IFormFile body)
+        public async Task<IActionResult> UploadFile(Guid id, [FromForm] IFormFile body)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace GetFiles.Controllers
                     return BadRequest();
 
                 var path = Path.Combine(
-                            Directory.GetCurrentDirectory(), "photo",
+                            Directory.GetCurrentDirectory(), "Content",
                             body.GetFilename());
 
                 using (var stream = new FileStream(path, FileMode.Create))
@@ -80,6 +80,10 @@ namespace GetFiles.Controllers
                     await body.CopyToAsync(stream);
                 }
 
+                var v = await _context.VideoCourse.FirstOrDefaultAsync(v => v.idCourse == id);
+                var video = new Video(body.FileName, path, v);
+                _context.Video.Add(video);
+                await _context.SaveChangesAsync();
                 return Ok("Successfly");
             }
             catch (Exception ex)

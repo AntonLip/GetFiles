@@ -14,9 +14,14 @@ namespace GetFiles.Models.dataBaseModel
                 
         }
 
+        public Video(string name, string _path, VideoCourse videoCourse)
+        {
+            nameOfVideo = name;
+            path = _path;
+            VideoCourse = videoCourse;
+        }
         public Video(VideoDTO videoDTO, VideoCourse videoCourse )
         {
-            idVideo = videoDTO.idVideo;
             nameOfVideo = videoDTO.nameOfVideo;
             path = videoDTO.path;
             VideoCourse = videoCourse;

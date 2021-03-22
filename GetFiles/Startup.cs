@@ -69,3 +69,6 @@ namespace GetFiles
         }
     }
 }
+//List of video to lesson id, idLesson
+//Material of lesson
+//List of Literature
